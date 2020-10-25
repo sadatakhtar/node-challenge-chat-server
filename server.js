@@ -29,7 +29,17 @@ let welcomeMessage = [
   id: 3,
   from: "Arnold",
   text: "I'll be BACK",
-}
+},
+{
+    id: 4,
+    from: "stallone",
+    text: "get up rocky",
+  },
+  {
+    id: 5,
+    from: "Alfy",
+    text: "have a nice day",
+  }
 
 ]
 
@@ -37,11 +47,23 @@ let welcomeMessage = [
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
 
-
+//Last 10 messages ----change 10 to lesser number to test
+app.get('/messages/latest', (req, res) => {
+   res.json(welcomeMessage.slice(1).slice(-10));
+})
 //Display homepage
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
 });
+//Post a new message
+app.post('/messages', (req, res) => {
+    let myMessage = req.body;
+    if(Object.keys(myMessage).length === 0){
+      res.json({status: "400"});
+    }
+    myMessage?(welcomeMessage.push(myMessage),res.json(welcomeMessage)) : res.send({success: false});
+    console.log(welcomeMessage);
+  })
 
 //See all messages
 app.get('/messages', (req, res) => {
@@ -68,15 +90,7 @@ app.get('/messages/:id', (req, res) => {
 
 })
 
-//Post a new message
-app.post('/messages', (req, res) => {
-  let myMessage = req.body
-  if(Object.keys(myMessage).length === 0){
-    res.json({status: "400"});
-  }
-  myMessage?(welcomeMessage.push(myMessage),res.json(welcomeMessage)) : res.send({success: false});
-  console.log(welcomeMessage);
-})
+
 
 //Delete a message
 app.delete('/messages/:id', (req, res) => {
