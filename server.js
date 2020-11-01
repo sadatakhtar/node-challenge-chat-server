@@ -49,7 +49,7 @@ let welcomeMessage = [
 
 //Last 10 messages ----change 10 to lesser number to test
 app.get('/messages/latest', (req, res) => {
-   res.json(welcomeMessage.slice(1).slice(-10));
+   res.json(welcomeMessage.slice(1).slice(-2));
 })
 //Display homepage
 app.get("/", function (request, response) {
@@ -71,13 +71,15 @@ app.get('/messages', (req, res) => {
   console.log(welcomeMessage);
 });
 
-//Getting a weird error ...works with "cyf" but not with other words / returns results from only the first element 
+//Getting a weird error ...works with "cyf" but not with other words/
+// returns results from only the first element 
 app.get('/messages/search', (req, res) => {
+  
   let termQ = req.query.term;
-
   welcomeMessage.filter((e, i) => {
     e.text.toLowerCase().includes(termQ) ? res.json(e.text) : res.json({success: false});
   })
+  
  
   
 })
